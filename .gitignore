@@ -1,0 +1,4 @@
+*.zip
+output.txt
+venv/
+__pycache__/

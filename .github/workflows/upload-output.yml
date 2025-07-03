@@ -1,0 +1,40 @@
+name: Run Script and Upload Output to JFrog
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  run-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Run Python script
+        run: |
+          python script/generate_output.py
+          echo "Generated output.txt:"
+          cat output.txt
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v2
+        with:
+          version: latest
+
+      - name: Configure JFrog CLI with Access Token
+        run: |
+          jf config add my-server \
+            --url=${{ secrets.JFROG_URL }} \
+            --access-token=${{ secrets.JFROG_ACCESS_TOKEN }} \
+            --interactive=false
+
+      - name: Upload output.txt to JFrog
+        run: |
+          jf rt upload "output.txt" "${{ secrets.JFROG_REPO }}/python-output/output.txt" --server-id=my-server

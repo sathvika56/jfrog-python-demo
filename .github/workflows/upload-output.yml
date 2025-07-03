@@ -37,4 +37,4 @@ jobs:
 
       - name: Upload output.txt to JFrog
         run: |
-          jf rt u "output.txt" "generic-local/python-output/output.txt" --server-id=my-server
+          jf rt u "output.txt" "practice-generic-local/python-output/output.txt" --server-id=my-server

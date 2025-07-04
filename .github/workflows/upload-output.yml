@@ -35,6 +35,9 @@ jobs:
             --access-token=${{ secrets.JFROG_ACCESS_TOKEN }} \
             --interactive=false
 
+      - name: Ping JFrog
+        run: jf rt ping
+
       - name: Upload output.txt to JFrog
         run: |
-          jf rt u "output.txt" "practice-generic-local/python-output/output.txt" --server-id=my-server
+          jf rt u "output.txt" "practice-generic-local/python-output/"
